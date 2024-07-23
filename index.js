@@ -48,5 +48,6 @@ if (error) {
   process.exit(1);
 } else {
   console.log(data);
+  console.log(`User ${id["username"]} successfully  registered.`);
   process.exit(0);
 }

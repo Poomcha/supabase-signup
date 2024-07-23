@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "node --env-file=.env index.js",
+    "remove": "node --env-file=.env remove-user.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

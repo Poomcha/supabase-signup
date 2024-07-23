@@ -31,12 +31,29 @@ Object.keys(id).forEach((key) => {
   else id[key] = r.question(`Input ${key}: `);
 });
 
+const xsolla_payload = {
+  username: id["email"],
+  remember_me: false,
+  password: id["password"],
+};
+
+const xsolla_res = await supabase.functions.invoke("registerXsollaUser", {
+  body: xsolla_payload,
+});
+
+if (xsolla_res.error) {
+  console.log("An error occured while registering user to XSolla.");
+  console.log(xsolla_res.error);
+  process.exit(1);
+}
+
 const payload = {
   email: id["email"],
   password: id["password"],
   options: {
     data: {
       username: id["username"],
+      xsolla: xsolla_res.data.id,
     },
   },
 };

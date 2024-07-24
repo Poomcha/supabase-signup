@@ -13,10 +13,10 @@ let supabase;
 try {
   supabase = createClient(
     process.env.SUPABASE_DATABASE_URL,
-    process.env.SUPABASE_PUBLIC_ANON_KEY,
+    process.env.SUPABASE_SERVICE_ROLE_KEY,
     options
   );
-  console.log("Supabase successfully connected.");
+  console.log("Supabase successfully connected in admin mode.");
 } catch (err) {
   console.log(err);
   process.exit(1);
@@ -50,15 +50,22 @@ if (xsolla_res.error) {
 const payload = {
   email: id["email"],
   password: id["password"],
-  options: {
-    data: {
-      username: id["username"],
-      xsolla: xsolla_res.data.id,
-    },
+  user_metadata: {
+    username: id["username"],
+    xsolla: xsolla_res.data.id,
   },
+  // options: {
+  //   data: {
+  //     username: id["username"],
+  //     xsolla: xsolla_res.data.id,
+  //   },
+  // },
+  email_confirm: true,
 };
 
-const { data, error } = await supabase.auth.signUp(payload);
+// const { data, error } = await supabase.auth.signUp(payload);
+
+const { data, error } = await supabase.auth.admin.createUser(payload);
 
 if (error) {
   console.log(error);

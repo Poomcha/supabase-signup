@@ -7,6 +7,8 @@
     "start": "node --env-file=.env index.js",
     "remove": "node --env-file=.env ./utils/remove-user.js",
     "update": "node --env-file=.env ./utils/update-user.js",
+    "get": "node --env-file=.env ./utils/get.js",
+    "king": "node --env-file=.env ./utils/king.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

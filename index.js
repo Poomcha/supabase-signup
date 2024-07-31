@@ -1,6 +1,11 @@
 import { createClient } from "@supabase/supabase-js";
 import r from "readline-sync";
 
+const api = {
+  db_url: process.env.SUPABASE_DATABASE_URL,
+  service_role_key: process.env.SUPABASE_SERVICE_ROLE_KEY,
+};
+
 const options = {
   auth: {
     autoRefreshToken: false,
@@ -9,13 +14,24 @@ const options = {
   },
 };
 
+if (process.argv.length > 3) {
+  console.log("Argument unauthorized.");
+  process.exit(1);
+} else {
+  if (process.argv.length === 3) {
+    if (process.argv[2] === "dev") {
+      api.db_url = process.env.SUPABASE_DATABASE_URL_DEV;
+      api.service_role_key = process.env.SUPABASE_SERVICE_ROLE_KEY_DEV;
+    } else {
+      console.log("Argument unauthorized.");
+      process.exit(1);
+    }
+  }
+}
+
 let supabase;
 try {
-  supabase = createClient(
-    process.env.SUPABASE_DATABASE_URL,
-    process.env.SUPABASE_SERVICE_ROLE_KEY,
-    options
-  );
+  supabase = createClient(api.db_url, api.service_role_key, options);
   console.log("Supabase successfully connected in admin mode.");
 } catch (err) {
   console.log(err);
